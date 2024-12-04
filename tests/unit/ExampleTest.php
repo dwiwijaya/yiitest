@@ -7,6 +7,39 @@ use app\models\User;
 
 class ExampleTest extends \Codeception\Test\Unit
 {
+    public function testProcessUserDataValid()
+    {
+
+        // Data valid
+        $userData = [
+            'name' => 'John Doe',
+            'transactions' => [
+                ['amount' => 100],
+                ['amount' => 150],
+                ['amount' => 200]
+            ]
+        ];
+
+        // Memanggil fungsi
+        $result = SysUser::processUserData($userData);
+
+        // Verifikasi hasil
+        $this->assertEquals('JOHN DOE', $result['name']);
+        $this->assertEquals(450, $result['total_amount']);
+    }
+
+    public function testGetService()
+    {
+        // Buat mock untuk model User
+        $relayServiceMock = $this->make(new SysUser(), [
+            'getRelayData' => 'Mocked Data'  // Menentukan nilai yang dikembalikan oleh mock
+        ]);
+        
+        // Memastikan bahwa getRelayData mengembalikan data yang sudah ditentukan
+        $result = $relayServiceMock->getRelayData('192.168.1.1', '8080', 'tag1,tag2');
+        $this->assertEquals('Mocked Data', $result);
+    }
+    
     public function testCreateUserInvalidId()
     {
         // Membuat user dengan iduser yang invalid
@@ -116,35 +149,5 @@ class ExampleTest extends \Codeception\Test\Unit
         $this->assertArrayHasKey('email', $user->getErrors());
     }
 
-    public function testGetService()
-    {
-        // Buat mock untuk model User
-        $relayServiceMock = $this->make(new SysUser(), [
-            'getRelayData' => 'Mocked Data'  // Menentukan nilai yang dikembalikan oleh mock
-        ]);
-        
-        // Memastikan bahwa getRelayData mengembalikan data yang sudah ditentukan
-        $result = $relayServiceMock->getRelayData('192.168.1.1', '8080', 'tag1,tag2');
-        $this->assertEquals('Mocked Data', $result);
-    }
-    public function testProcessUserDataValid()
-    {
-
-        // Data valid
-        $userData = [
-            'name' => 'John Doe',
-            'transactions' => [
-                ['amount' => 100],
-                ['amount' => 150],
-                ['amount' => 200]
-            ]
-        ];
-
-        // Memanggil fungsi
-        $result = SysUser::processUserData($userData);
-
-        // Verifikasi hasil
-        $this->assertEquals('JOHN DOE', $result['name']);
-        $this->assertEquals(450, $result['total_amount']);
-    }
+    
 }

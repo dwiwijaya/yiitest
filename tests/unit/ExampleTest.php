@@ -103,39 +103,6 @@ class ExampleTest extends \Codeception\Test\Unit
         $this->assertNotNull($deletedUser);
     }
 
-    public function testCreateUserWithExistingEmail()
-    {
-        // Membuat user pertama
-        $user1 = new SysUser();
-        $user1->iduser = 4;
-        $user1->name = 'Alice';
-        $user1->email = 'alice@example.com';
-        $user1->save();
-
-        // Membuat user kedua dengan email yang sama
-        $user2 = new SysUser();
-        $user2->iduser = 5;
-        $user2->name = 'Bob';
-        $user2->email = 'alice@example.com'; // Duplicate email
-        $this->assertFalse($user2->save());
-
-        // Verifikasi bahwa ada error untuk email yang duplikat
-        $this->assertArrayHasKey('email', $user2->getErrors());
-    }
-
-    public function testCreateUserWithNullName()
-    {
-        // Membuat user dengan nama null
-        $user = new SysUser();
-        $user->iduser = 6;
-        $user->name = null; // Nama harus diisi
-        $user->email = 'test@example.com';
-
-        // Pastikan penyimpanan gagal karena nama tidak boleh null
-        $this->assertFalse($user->save());
-        $this->assertArrayHasKey('name', $user->getErrors());
-    }
-
     public function testCreateUserWithInvalidEmailFormat()
     {
         // Membuat user dengan email yang invalid

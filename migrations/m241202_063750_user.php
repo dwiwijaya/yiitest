@@ -12,7 +12,11 @@ class m241202_063750_user extends Migration
      */
     public function safeUp()
     {
-
+        $this->createTable('sys_user', [
+            'iduser' => $this->primaryKey(),
+            'name' => $this->string(100)->defaultValue(null),
+            'email' => $this->string(100)->defaultValue(null),
+        ], 'ENGINE=InnoDB DEFAULT CHARSET=latin1');
     }
 
     /**
